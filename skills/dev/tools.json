@@ -1,0 +1,31 @@
+{
+  "skill": "dev",
+  "status": "placeholder",
+  "tools": [
+    {
+      "name": "read_task_instructions",
+      "type": "internal",
+      "description": "Read assigned task instructions and sprint context"
+    },
+    {
+      "name": "modify_project_files",
+      "type": "internal",
+      "description": "Create or modify project files for implementation"
+    },
+    {
+      "name": "run_basic_validation",
+      "type": "placeholder",
+      "description": "Run lightweight validation commands when needed"
+    },
+    {
+      "name": "write_task_result",
+      "type": "internal",
+      "description": "Write structured task_result.json output"
+    }
+  ],
+  "notes": [
+    "Placeholder tools only",
+    "No real command mapping yet",
+    "Actual executor will be mapped later"
+  ]
+}

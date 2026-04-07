@@ -1,0 +1,6 @@
+{
+  "template_name": "agent_factory_template",
+  "template_version": "1.0.0",
+  "phase_baseline": "phase3_stable",
+  "compatible_bootstrap_modes": ["qwen", "manual", "openclaw_minimal"]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "required": ["task_id", "status", "summary", "files_changed", "error"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "status": { "type": "string", "enum": ["success", "fail"] },
+    "summary": { "type": "string" },
+    "files_changed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "error": { "type": ["string", "null"] }
+  }
+}

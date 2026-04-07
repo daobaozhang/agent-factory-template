@@ -1,0 +1,21 @@
+{
+  "name": "project-bootstrap",
+  "role": "bootstrap_coordinator",
+  "description": "Initializes a new Agent Factory instance from template, adapts to runtime environment, and establishes the minimal execution loop.",
+  "status": "active",
+  "inputs": [
+    "config/template_version.json",
+    "config/ENV_PROFILE.template.json",
+    "runtime environment survey"
+  ],
+  "outputs": [
+    "config/ENV_PROFILE.json",
+    "bootstrap execution status",
+    "ready state signal"
+  ],
+  "notes": [
+    "Active since template v1.0.0",
+    "Runs once during project initialization",
+    "Does not modify Phase 3 core protocols"
+  ]
+}

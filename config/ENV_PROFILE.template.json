@@ -1,0 +1,11 @@
+{
+  "project_name": "{{PROJECT_NAME}}",
+  "project_root": "{{PROJECT_ROOT}}",
+  "environment": "{{ENVIRONMENT}}",
+  "bootstrap.mode": "{{BOOTSTRAP_MODE}}",
+  "executor": "{{EXECUTOR}}",
+  "gateway.port": "{{GATEWAY_PORT}}",
+  "gateway.host": "{{GATEWAY_HOST}}",
+  "openclaw.container": "{{OPENCLAW_CONTAINER}}",
+  "created_at": "{{CREATED_AT}}"
+}

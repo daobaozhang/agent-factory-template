@@ -1,0 +1,36 @@
+{
+  "skill": "project-manager",
+  "status": "placeholder",
+  "tools": [
+    {
+      "name": "read_sprint_state",
+      "type": "internal",
+      "description": "Read CURRENT_SPRINT.json and CURRENT_SPRINT.md"
+    },
+    {
+      "name": "read_task_results",
+      "type": "internal",
+      "description": "Read runtime/jobs/*.json task results"
+    },
+    {
+      "name": "update_sprint_state",
+      "type": "internal",
+      "description": "Update CURRENT_SPRINT.json and CURRENT_SPRINT.md after aggregation"
+    },
+    {
+      "name": "delegate_to_dev",
+      "type": "placeholder",
+      "description": "Delegate implementation work to dev role"
+    },
+    {
+      "name": "delegate_to_qa",
+      "type": "placeholder",
+      "description": "Delegate verification work to qa role"
+    }
+  ],
+  "notes": [
+    "Placeholder tools only",
+    "No real command mapping yet",
+    "Target OpenClaw container for this project is openclaw001"
+  ]
+}

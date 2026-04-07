@@ -1,0 +1,36 @@
+{
+  "skill": "project-bootstrap",
+  "status": "active",
+  "tools": [
+    {
+      "name": "survey_environment",
+      "type": "internal",
+      "description": "Run scripts/survey_environment.sh to detect runtime environment and generate ENV_PROFILE.json"
+    },
+    {
+      "name": "generate_env_profile",
+      "type": "internal",
+      "description": "Instantiate config/ENV_PROFILE.json from ENV_PROFILE.template.json with detected values"
+    },
+    {
+      "name": "run_entrypoint",
+      "type": "internal",
+      "description": "Execute scripts/entrypoint.sh to begin bootstrap based on ENV_PROFILE bootstrap.mode"
+    },
+    {
+      "name": "run_minimal_loop",
+      "type": "internal",
+      "description": "Execute scripts/bootstrap_minimal_loop.sh to verify infrastructure completeness"
+    },
+    {
+      "name": "verify_template_version",
+      "type": "internal",
+      "description": "Read config/template_version.json to confirm template compatibility"
+    }
+  ],
+  "notes": [
+    "Active tools since template v1.0.0",
+    "All tools map to actual scripts in scripts/ directory",
+    "No placeholder tools in this skill"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "skill": "qa",
+  "status": "placeholder",
+  "tools": [
+    {
+      "name": "read_dev_outputs",
+      "type": "internal",
+      "description": "Read project files and dev task_result outputs"
+    },
+    {
+      "name": "validate_system_behavior",
+      "type": "placeholder",
+      "description": "Validate API, data flow, and constraints"
+    },
+    {
+      "name": "check_constraints",
+      "type": "internal",
+      "description": "Ensure system rules and boundaries are not violated"
+    },
+    {
+      "name": "write_verification_result",
+      "type": "internal",
+      "description": "Write structured verification task_result.json"
+    }
+  ],
+  "notes": [
+    "Placeholder tools only",
+    "No real command mapping yet",
+    "QA acts as system-level verifier",
+    "Actual verifier may be mapped later"
+  ]
+}

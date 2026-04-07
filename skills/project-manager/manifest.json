@@ -1,0 +1,20 @@
+{
+  "name": "project-manager",
+  "role": "project_manager",
+  "description": "Reads CURRENT_SPRINT, delegates work, aggregates task results, and updates sprint state.",
+  "status": "placeholder",
+  "inputs": [
+    "docs/CURRENT_SPRINT.json",
+    "docs/CURRENT_SPRINT.md",
+    "runtime/jobs/*.json"
+  ],
+  "outputs": [
+    "docs/CURRENT_SPRINT.json",
+    "docs/CURRENT_SPRINT.md"
+  ],
+  "notes": [
+    "Placeholder manifest only",
+    "No tool wiring yet",
+    "Target OpenClaw container for this project is openclaw001"
+  ]
+}

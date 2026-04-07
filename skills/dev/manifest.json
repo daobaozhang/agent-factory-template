@@ -1,0 +1,20 @@
+{
+  "name": "dev",
+  "role": "developer",
+  "description": "Implements assigned development tasks, changes project files, and produces structured task results.",
+  "status": "placeholder",
+  "inputs": [
+    "docs/CURRENT_SPRINT.json",
+    "docs/CURRENT_SPRINT.md",
+    "task instructions"
+  ],
+  "outputs": [
+    "project files",
+    "runtime/jobs/task_result.json"
+  ],
+  "notes": [
+    "Placeholder manifest only",
+    "No tool wiring yet",
+    "Actual executor may be mapped later"
+  ]
+}

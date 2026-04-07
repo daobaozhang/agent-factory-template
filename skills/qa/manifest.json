@@ -1,0 +1,21 @@
+{
+  "name": "qa",
+  "role": "quality_assurance",
+  "description": "Reviews development outputs, validates behavior and constraints, and produces structured verification results.",
+  "status": "placeholder",
+  "inputs": [
+    "docs/CURRENT_SPRINT.json",
+    "docs/CURRENT_SPRINT.md",
+    "project files",
+    "runtime/jobs/task_result.json"
+  ],
+  "outputs": [
+    "verification summary",
+    "runtime/jobs/task_result.json"
+  ],
+  "notes": [
+    "Placeholder manifest only",
+    "No tool wiring yet",
+    "Actual verifier may be mapped later"
+  ]
+}
