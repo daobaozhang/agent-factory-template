@@ -1,152 +1,214 @@
 🚀 Agent Factory Template
 
-> 🧠 一个将 AI 开发流程工程化的模板，实现 
-> —— 让 AI 项目具备「执行、验证、状态、闭环」
-如：
-OpenClaw（PM）
- ↓
-project-manager skill
- ↓
-Worker 调度（Codex / claude）
- ↓
-workspace + Git
- ↓
-agent-gateway
- ↓
-agent-client / agent-slides
- ↓
-agent / JSON / Markdown / Logs
+一个用于构建 AI 自动开发系统（Agent Factory）的生产级模板。
 
-## 📌 这是什么？
+该模板提供了一套**最小但完整可运行的任务闭环系统**：
 
-Agent Factory Template 是一个：
+👉 项目经理（PM） → 执行器（Dev） → QA → 状态更新 → 下一任务
 
-> 👉 **AI开发流程操作系统（Agent Development OS）模板**
+---
 
-它不是简单的代码模板，而是一套：
+# 🧠 这是什么？
+
+这不是一个具体项目。
+
+这是：
+
+👉 **AI 自动开发“操作系统”模板**
+
+你可以用它：
+
+- 快速启动一个 AI 驱动开发项目
+- 让任务按“一个一个”稳定执行
+- 用文件系统管理状态（无隐式上下文）
+- 支持未来 OpenClaw 自动接管
+
+---
+
+# ⚡ 核心能力
+
+## 1️⃣ 最小任务闭环
 
 ```text
-任务驱动 → 执行 → QA验证 → 状态更新 → 持续推进
+PM → 任务 → 执行 → QA → 更新状态 → 下一任务
 
-的完整运行机制。
+特点：
 
-❗ 为什么需要这个？
+一次只做一个任务（原子化）
+所有步骤可验证
+支持失败恢复（FAIL → 修复 → PASS）
+2️⃣ 文件级状态管理（SSOT）
 
-传统 AI 项目通常是这样：
+系统唯一状态来源：
 
-写 prompt → 生成结果 → 人工判断 → 再改 prompt
+docs/CURRENT_SPRINT.json
 
-问题：
+作用：
 
-❌ 没有流程
-❌ 没有验证
-❌ 没有状态
-❌ 无法规模化
-✅ 本模板解决的问题
+替代“聊天记忆”
+支持多窗口 / 多Agent
+可追踪、可恢复、可复现
+3️⃣ 标准化任务结果
 
-Agent Factory Template 把 AI 开发变成：
+每个任务必须产出：
 
-可执行的工程流程
+runtime/artifacts/<task_id>_dev_result.json
+runtime/artifacts/<task_id>_qa_result.json
 
-具体能力：
+并通过 schema 校验：
 
-1️⃣ 强制闭环（核心）
-Task → Dev → QA → Validate → 状态更新
+runtime/schemas/task_result.schema.json
+4️⃣ 环境自适应（核心设计）
 
-👉 每一步都有输入 / 输出
-👉 必须验证才能进入下一步
+通过：
 
-2️⃣ 单一状态真源（SSOT）
+config/ENV_PROFILE.json
 
-所有状态统一写入：
+系统会自动识别：
 
-CURRENT_SPRINT.json
+是否有 Qwen CLI
+是否有 OpenClaw
+是否支持 Docker
+当前运行模式
+5️⃣ 一键初始化项目
+./scripts/create_project.sh my_project
 
-👉 不允许隐式状态
-👉 所有决策基于真实数据
+执行后自动完成：
 
-3️⃣ 结构化结果（机器可判断）
-{
-  "task_id": "...",
-  "status": "success | fail",
-  "summary": "...",
-  "files_changed": [],
-  "error": null
-}
+模板复制
+环境检测
+状态初始化
+启动最小闭环（可选）
+输出 READY 状态
+📂 项目结构
+agent_factory_template/
+├── config/        # 环境配置 / 模板版本
+├── docs/          # 状态与项目文档
+├── skills/        # PM / Dev / QA 定义
+├── runtime/       # 运行时数据（jobs / logs / artifacts）
+├── scripts/       # 所有执行脚本
+├── services/      # 可扩展服务层（如 gateway）
+└── workspace/     # 实际开发空间
+🧩 系统架构
+四层设计
+1️⃣ 核心调度层（PM）
+project-manager skill
+CURRENT_SPRINT 驱动
+任务选择与推进
+2️⃣ 执行层（Dev）
+Qwen CLI（默认）
+shell（fallback）
+可扩展 Codex / OpenCode
+3️⃣ 环境层
+ENV_PROFILE.json
+bootstrap_mode 控制行为
+4️⃣ 运行层
+runtime/jobs
+runtime/artifacts
+runtime/logs
+🔧 使用流程（非常重要）
+Step 1：创建项目
+./scripts/create_project.sh my_project
 
-👉 AI 输出不再是“文本”
-👉 而是“可执行结果”
+可选：
 
-4️⃣ Dev / QA 分离
-Dev 负责实现
-QA 负责验证
+./scripts/create_project.sh my_project --no-bootstrap
+Step 2：环境调研
+scripts/survey_environment.sh
 
-👉 避免“AI自己说自己对”
+生成：
 
-5️⃣ 模板化复制能力
+config/ENV_PROFILE.json
+Step 3：系统启动
+scripts/entrypoint.sh
+Step 4：最小闭环执行
+scripts/bootstrap_minimal_loop.sh
 
-你可以：
+执行流程：
 
-bash scripts/create_project.sh my_project
+创建任务
+Dev 执行
+QA 校验
+schema 验证
+更新 CURRENT_SPRINT
+⚙️ 启动模式说明
+模式	行为
+qwen	全自动执行
+manual	输出操作步骤
+openclaw_minimal	等待 OpenClaw 接管
+📦 模板 vs 项目
+模板包含：
+系统架构
+调度逻辑
+skill 定义
+runtime 机制
+模板不包含：
+业务逻辑（如 PPT 生成）
+API 实现
+项目专属 prompt
+特定服务配置
+🛑 使用规则（必须遵守）
+CURRENT_SPRINT.json 是唯一真源
+Worker 不允许修改 CURRENT_SPRINT
+一次只允许一个任务
+所有任务必须可验证
+禁止隐式状态
+🧪 系统验证
 
-👉 一键创建一个完整 AI 项目（含流程）
+运行：
 
-⚡ 快速开始
-git clone --branch v1.0-template https://github.com/daobaozhang/agent-factory-template.git
-cd agent-factory-template
-bash scripts/create_project.sh my_project
-🧭 第一次运行会发生什么？
+bash scripts/entrypoint.sh
 
-系统会自动：
+如果输出：
 
-环境检测（ENV_PROFILE）
-初始化状态（CURRENT_SPRINT）
-生成任务
-执行 Dev
-执行 QA
-校验结果
-更新状态
-输出 PASS / FAIL
-⚙️ 运行模式
-模式	说明
-任何编码工具 	自动执行（推荐）
-manual	手动执行
-openclaw_minimal	最小接入 OpenClaw
-🧱 项目结构
-agent-factory-template/
-├── scripts/      # 流程控制（闭环入口）
-├── skills/       # Agent 行为定义
-├── runtime/      # 状态 + 结果
-├── config/       # 环境配置
-├── docs/         # 使用说明
-🎯 适用场景
+READY
 
-这个模板适用于：
+说明系统正常
 
-AI Agent 系统开发
-自动化开发流程
-Prompt 工程升级为工程系统
-多 Agent 协作系统
-AI + QA 验证闭环
-⚠️ 当前版本说明
-Version: v1.0-template
-Status: Freeze（稳定基座）
-✅ 已支持
-自动闭环流程
-状态管理（SSOT）
-QA 验证机制
-模板复制能力
-❌ 暂不支持（刻意控制复杂度）
-自动调度系统
-OpenClaw 完整接管
-平台 UI
-CI/CD
-📖 文档
-docs/CREATE_NEW_PROJECT.md → 如何创建项目
-docs/ENV_DISCOVERY.md → 环境说明
-docs/TEMPLATE_README.md → 模板细节
-🧠 一句话总结
+🔮 后续扩展方向
+OpenClaw 全自动接管
+多 Agent 并发执行
+Docker Worker 调度
+持久化服务层（Gateway）
+🧠 设计理念
 
-这是一个把 AI 开发从“写 prompt”升级为“跑工程流程”的模板
+👉 让 AI 开发：
 
-👤 作者daobaozhang
+可控（deterministic）
+可追踪（traceable）
+可复现（reproducible）
+🏁 最后一句话
+
+这个模板的目标不是“更智能”，而是：
+
+👉 让 AI 开发变得稳定、可控、可复制
+
+
+
+# 🧠 我给你的真实评价（很重要）
+
+你现在 README 最大的问题通常是：
+
+### ❌ 太像“内部设计文档”
+别人看完还是不知道：
+
+👉 怎么开始用
+
+---
+
+### ❌ 缺少“入口”
+必须有：
+
+```bash
+./scripts/create_project.sh
+❌ 没有讲清楚“这是啥”
+
+👉 工具？框架？demo？项目？
+
+🎯 这版帮你解决了
+一眼知道是什么（AI开发操作系统）
+一条命令启动
+架构清晰
+流程清晰
+模板边界清晰
+可扩展路径清晰
