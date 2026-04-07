@@ -1,124 +1,139 @@
 # Agent Factory Template
 
-## Overview
-A templated Agent Factory for automated software development.
-Current business instance: PPT Agent.
+> Agent Factory Template = **可运行闭环模板**
 
-## Directory Structure
+一个可复制、可实例化、自带最小自动闭环的 Agent 工厂模板。
 
-```
-/
-├── config/
-│   ├── template_version.json          # Template metadata and version
-│   ├── ENV_PROFILE.template.json      # Environment profile template (in template)
-│   └── ENV_PROFILE.json               # Instantiated environment profile (per project)
-├── docs/
-│   ├── CURRENT_SPRINT.json            # Machine-readable sprint state (SSOT)
-│   ├── CURRENT_SPRINT.md              # Human-readable sprint state
-│   ├── PROJECT_CONTEXT.md             # Project positioning and rules
-│   ├── TASK_RESULT_SCHEMA.md          # Task result field definitions
-│   ├── PIPELINE_OVERVIEW.md           # Pipeline structure overview
-│   └── TEMPLATE_README.md             # This file
-├── skills/
-│   ├── project-manager/               # PM decision protocols
-│   │   ├── manifest.json
-│   │   ├── tools.json
-│   │   ├── state_reader.md
-│   │   ├── decision_logic.md
-│   │   ├── task_delegation.md
-│   │   ├── prompt_generator.md
-│   │   ├── orchestration_loop.md
-│   │   ├── failure_recovery.md
-│   │   ├── task_closure.md
-│   │   ├── next_task_selection.md
-│   │   ├── task_decomposition.md
-│   │   ├── acceptance_criteria.md
-│   │   ├── task_prioritization.md
-│   │   ├── task_dependency_management.md
-│   │   ├── task_state_transition.md
-│   │   └── task_tracking.md
-│   ├── dev/                           # Dev execution protocol
-│   │   ├── manifest.json
-│   │   ├── tools.json
-│   │   └── dev_execution.md
-│   ├── qa/                            # QA verification protocol
-│   │   ├── manifest.json
-│   │   ├── tools.json
-│   │   └── qa_verification.md
-│   └── project-bootstrap/             # Bootstrap coordination
-│       ├── manifest.json
-│       ├── tools.json
-│       ├── bootstrap_flow.md
-│       └── env_adaptation.md
-├── services/
-│   ├── ppt-gateway/                   # Business entrypoint (mock)
-│   │   ├── app/main.py
-│   │   ├── requirements.txt
-│   │   ├── tests/test_placeholder.py
-│   │   └── README.md
-│   ├── orchestrator_stub.py           # Placeholder orchestration entrypoint
-│   └── orchestrator_readme.md
-├── scripts/
-│   ├── entrypoint.sh                  # Main entrypoint (reads ENV_PROFILE, branches by mode)
-│   ├── survey_environment.sh          # Detects environment, generates ENV_PROFILE.json
-│   ├── bootstrap_minimal_loop.sh      # Minimal infrastructure verification
-│   ├── run_dev_task.sh                # Dev task runner
-│   ├── run_qa_task.sh                 # QA task runner
-│   └── run_task_pipeline.sh           # Pipeline orchestrator
-├── runtime/
-│   ├── jobs/                          # Task JSON files (PM → dev/qa handoff)
-│   ├── artifacts/                     # Dev results and QA results
-│   │   ├── <task_id>_dev_result.json  # Dev output
-│   │   └── <task_id>_qa_result.json   # QA output
-│   ├── status/                        # Runtime status
-│   │   ├── system_ready.json          # Ready signal
-│   │   └── task_result.json           # Latest task result pointer
-│   ├── schemas/                       # JSON schemas
-│   │   └── task_result.schema.json    # task_result validation schema
-│   └── scripts/                       # Runtime scripts
-│       └── validate_task_result.sh    # Schema validation script
-└── tests/                             # Project tests
-```
+---
 
-## Skill → Script Mapping
+## 一句话说明
 
-| Skill | Script |
-|-------|--------|
-| `skills/dev` | `scripts/run_dev_task.sh` |
-| `skills/qa` | `scripts/run_qa_task.sh` |
-| `skills/project-bootstrap` | `scripts/bootstrap_minimal_loop.sh` |
+复制模板 → 初始化环境 → 自动执行 dev → QA → 验证 → 更新状态 → 完成
 
-## Bootstrap Modes
+---
 
-| Mode | Behavior |
-|------|----------|
-| `qwen` | Automatic initialization via Qwen CLI |
-| `manual` | Print manual operation guide, no auto-execution |
-| `openclaw_minimal` | Wait for PM (OpenClaw) scheduling |
+## 核心能力
 
-## Quick Start
+### 1. 最小自动闭环
+
+- `create_project.sh` — 一键创建项目
+- `entrypoint.sh` — 读取环境配置，按模式启动
+- `bootstrap_minimal_loop.sh` — 9 步闭环：task → dev → QA → validate → 更新 CURRENT_SPRINT
+- 全程无需人工干预（qwen 模式）
+
+### 2. 状态真源（SSOT）
+
+- `docs/CURRENT_SPRINT.json` 是唯一状态来源
+- 所有决策基于文件，不基于聊天记忆
+- Workers 永不修改 CURRENT_SPRINT
+
+### 3. 结构化结果
+
+- Dev 输出：`runtime/artifacts/<task_id>_dev_result.json`
+- QA 输出：`runtime/artifacts/<task_id>_qa_result.json`
+- 最新指针：`runtime/status/task_result.json`
+- Schema 校验：`runtime/scripts/validate_task_result.sh`
+
+### 4. ENV_PROFILE 机制
+
+- 模板只保留 `config/ENV_PROFILE.template.json`
+- 实例化时自动生成 `config/ENV_PROFILE.json`
+- 支持三种模式：qwen / manual / openclaw_minimal
+
+### 5. 模板可复制
+
+- 模板不包含任何实例化数据
+- 通过 `create_project.sh` 可创建任意多个独立实例
+- 每个实例有独立的环境配置和状态
+
+---
+
+## 使用边界
+
+### 本模板包含
+
+- 完整的项目初始化链路
+- dev / QA 执行协议（inline 实现）
+- 最小自动闭环（9 步）
+- 状态管理协议（CURRENT_SPRINT SSOT）
+- 结构化结果协议（task_result.json schema）
+- ENV_PROFILE 环境适配机制
+- 模板导出 / 复制能力
+
+### 本模板不包含
+
+- **OpenClaw 完整接管** — skills 的 manifest / tools 当前为角色定义占位
+- **自动调度器** — `orchestrator_stub.py` 仅列出任务，不执行调度
+- **平台化能力** — 无多项目管理、权限控制、审计日志
+- **完整 release pipeline** — 当前通过手动导出 + 打包
+
+### 不适用场景
+
+- 需要生产级自动调度的场景
+- 需要 OpenClaw 完整 skill/tool 映射的场景
+- 需要 CI/CD 集成的场景
+
+---
+
+## 快速开始
 
 ```bash
-# Create new instance
-bash create_project.sh /path/to/new/project
+# 1. 从模板创建新项目
+cd /volume2/qa/projects/ppt_agent_factory
+bash scripts/create_project.sh my_project
 
-# Or create without auto-bootstrap
-bash create_project.sh /path/to/new/project --no-bootstrap
+# 2. 进入新项目
+cd ../my_project
 
-# Manual bootstrap
-cd /path/to/new/project
-bash scripts/survey_environment.sh
+# 3. 手动启动（如果创建了时跳过了自动 bootstrap）
 bash scripts/entrypoint.sh
 ```
 
-## Result File Conventions
+## 项目结构
 
-| File | Purpose |
-|------|---------|
-| `runtime/status/task_result.json` | Latest task result (pointer/index, overwritten per task) |
-| `runtime/artifacts/<task_id>_dev_result.json` | Dev output for specific task |
-| `runtime/artifacts/<task_id>_qa_result.json` | QA verification result for specific task |
+```
+/
+├── config/                    # 环境配置
+│   ├── template_version.json  # 模板版本
+│   ├── ENV_PROFILE.template.json  # 环境配置模板
+│   └── ENV_PROFILE.json       # 实例化时生成（不在模板中）
+├── docs/                      # 文档和状态
+│   ├── CURRENT_SPRINT.json    # 状态真源（SSOT）
+│   ├── CURRENT_SPRINT.md      # 人类可读状态
+│   ├── CREATE_NEW_PROJECT.md  # 使用文档
+│   ├── ENV_DISCOVERY.md       # 环境探测说明
+│   └── TEMPLATE_README.md     # 本文件
+├── skills/                    # 角色定义和协议
+│   ├── project-manager/       # PM 决策协议（14 个文件）
+│   ├── dev/                   # Dev 执行协议
+│   ├── qa/                    # QA 验证协议
+│   └── project-bootstrap/     # 启动协调协议
+├── scripts/                   # 执行脚本
+│   ├── create_project.sh      # 项目创建入口
+│   ├── entrypoint.sh          # 启动入口
+│   ├── bootstrap_minimal_loop.sh  # 最小闭环
+│   ├── run_dev_task.sh        # Dev 执行器
+│   ├── run_qa_task.sh         # QA 执行器
+│   ├── survey_environment.sh  # 环境探测
+│   └── init_current_sprint.sh # Sprint 初始化
+├── services/                  # 服务
+│   ├── ppt-gateway/           # 业务入口（mock）
+│   └── orchestrator_stub.py   # 调度占位
+├── runtime/                   # 运行时数据
+│   ├── jobs/                  # 任务定义
+│   ├── artifacts/             # 任务结果（dev + qa）
+│   ├── status/                # 最新状态指针
+│   ├── schemas/               # JSON schema
+│   └── scripts/               # 运行时脚本
+├── tests/                     # 测试
+└── workers/                   # Worker 目录（预留）
+```
 
-## Template Version
+## 版本信息
 
-See `config/template_version.json` for current version and compatibility.
+- **版本**: v1.0-template
+- **基线**: Phase 3 Stable
+- **冻结**: 是（Phase 3 内核不再修改）
+- **Git tag**: `v1.0-template`
+
+详细发布说明见 [RELEASE_v1.0.md](./RELEASE_v1.0.md)。
