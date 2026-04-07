@@ -5,7 +5,7 @@
 - **Version**: v1.0-template
 - **Baseline**: Phase 3 Stable
 - **Release Date**: 2026-04-07
-- **Commit**: `3f69a58` (tagged `v1.0-template`)
+- **Commit**: `078d8e1` (tagged `v1.0-template`)
 - **Repository**: `/volume2/qa/projects/ppt_agent_factory`
 - **Standard Path**: `/volume2/qa/projects/ppt_agent_factory`
 
